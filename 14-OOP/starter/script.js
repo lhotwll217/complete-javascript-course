@@ -157,6 +157,24 @@ Person.hey();
 
 PersonCl.hey();
 
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    //Calls to the parent constructor, makes this keyword available (by making it a Contructor fuction through inheritance?) If we didn't need this, the super call would suffice to pas all the arguments to the class.
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(`My name is ${this.fullName} and I'm cool.`);
+  }
+
+  calcAge() {
+    console.log(`I feel older than I am.`);
+  }
+}
+
+const martha = new StudentCl('Marth Jones', 2012, 'Computer Science');
+console.log(martha);
 const PersonProto = {
   calcAge() {
     console.log(2037 - this.birthYear);
