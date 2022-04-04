@@ -180,3 +180,94 @@ console.log(steven.__proto__ === PersonProto);
 const sarah = Object.create(PersonProto);
 sarah.init('Sarah', 1979);
 sarah.calcAge();
+
+/* 
+// Every funct
+1. Use a constructor function to implement a Car. A car has a make and a speed property. The speed property is the current speed of the car in km/h;
+2. Implement an 'accelerate' method that will increase the car's speed by 10, and log the new speed to the console;
+3. Implement a 'brake' method that will decrease the car's speed by 5, and log the new speed to the console;
+4. Create 2 car objects and experiment with calling 'accelerate' and 'brake' multiple times on each of them.
+
+DATA CAR 1: 'BMW' going at 120 km/h
+DATA CAR 2: 'Mercedes' going at 95 km/h
+
+GOOD LUCK 😀
+*/
+
+/* 
+1. Re-create challenge 1, but this time using an ES6 class;
+2. Add a getter called 'speedUS' which returns the current speed in mi/h (divide by 1.6);
+3. Add a setter called 'speedUS' which sets the current speed in mi/h (but converts it to km/h before storing the value, by multiplying the input by 1.6);
+4. Create a new car and experiment with the accelerate and brake methods, and with the getter and setter.
+
+DATA CAR 1: 'Ford' going at 120 km/h
+
+GOOD LUCK 😀
+*/
+
+class CarCl {
+  constructor(speed, make) {
+    this.speed = speed;
+    this.make = make;
+  }
+
+  accelerate() {
+    this.speed = this.speed + 10;
+    console.log(`${this.make} going ${this.speed} kmh`);
+  }
+
+  brake() {
+    this.speed = this.speed - 5;
+    console.log(`${this.make} going ${this.speed} kmh`);
+  }
+
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+  //
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+
+const audi = new CarCl('46', 'Audi');
+console.log(audi);
+console.log(audi.speedUS);
+audi.brake();
+audi.accelerate();
+
+audi.speedUS = 120;
+console.log(audi.speed);
+
+const Person2 = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+Person2.prototype.calcAge = function () {
+  console.log(2037 - this.birthYear);
+};
+
+const Student = function (firstName, birthYear, course) {
+  Person2.call(this, firstName, birthYear);
+  this.course = course;
+};
+//Student.prototype = Person2.prototype ==> this leads to Student having the same prototype instead of inhereiting.
+Student.prototype = Object.create(Person2.prototype);
+
+Student.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+const mike = new Student('Mike', 2020, 'Computer Science');
+
+Student.prototype.constructor = Student;
+
+console.log(mike instanceof Student);
+console.log(mike instanceof Person2);
+
+console.log(mike);
+mike.introduce();
+mike.calcAge();
+console.log(mike.__proto__.__proto__);
+console.log(mike.__proto__.__proto__);
