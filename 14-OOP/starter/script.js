@@ -1,13 +1,13 @@
 'use strict';
 
-const Person = function(firstName, birthYear) {
-    this.firstName = firstName;
-    this.birthYear= birthYear;
-    // This creates a function for each object instead of using the prototype to delegate the behavior which would effect performance
-    // this.calcAge = function () {
-    //     console.log(2037 - this.birthYear)
-    // }
-}
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+  // This creates a function for each object instead of using the prototype to delegate the behavior which would effect performance
+  // this.calcAge = function () {
+  //     console.log(2037 - this.birthYear)
+  // }
+};
 
 const jonas = new Person('jonas', 1991);
 console.log(jonas);
@@ -17,29 +17,33 @@ console.log(jonas);
 //3 {} linked to prototype
 //4. function automatically calls this
 const matilda = new Person('Matild', 2017);
-const jack = new Person('Jack', 1975)
+const jack = new Person('Jack', 1975);
 
-console.log(jack, matilda)
+console.log(jack, matilda);
 
-console.log(jonas instanceof Person)
+console.log(jonas instanceof Person);
 
 //Prototype
 
-Person.prototype.calcAge = function() {
-    console.log(2037 - this.birthYear)
-}
+Person.prototype.calcAge = function () {
+  console.log(2037 - this.birthYear);
+};
 
-jonas.calcAge()
+jonas.calcAge();
 
-console.log(jonas.__proto__)
-console.log(jonas.__proto__ === Person.prototype)
-console.log(Person.prototype.isPrototypeOf(jonas))
-console.log(Person.prototype.isPrototypeOf(Person))
-console.log(Person)
+console.log(jonas.__proto__.__proto__);
+console.log(jonas.__proto__ === Person.prototype);
+console.log(Person.prototype.isPrototypeOf(jonas));
+console.log(Person.prototype.isPrototypeOf(Person));
+console.log(Person);
 
-Person.prototype.species = 'HomoSapiens'
+const h1 = document.querySelector('h1');
+// Function is also an objects, and also have prototypes which also have methods on them.
+console.dir(x => x + 1);
 
-// ownProperties are the ones only declared on the object 
+Person.prototype.species = 'HomoSapiens';
+
+// ownProperties are the ones only declared on the object
 // Coding Challenge #1
 
 /* 
@@ -54,30 +58,29 @@ DATA CAR 2: 'Mercedes' going at 95 km/h
 
 GOOD LUCK 😀
 */
-const Car = function(make, speed) {
-    this.make = make;
-    this.speed = speed;
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
 
-    // this.accelerate = function() {
-    //     this.speed = this.speed + 10;
-    //     console.log(`${this.make} going ${this.speed} kmh`)
-    // }
+  // this.accelerate = function() {
+  //     this.speed = this.speed + 10;
+  //     console.log(`${this.make} going ${this.speed} kmh`)
+  // }
 
-    this.brake = function() {
-        this.speed = this.speed - 5;
-        console.log(`${this.make} going ${this.speed} kmh`)
-    }
-
-}
-
-Car.prototype.brake = function() {
+  this.brake = function () {
     this.speed = this.speed - 5;
-    console.log(`${this.make} going ${this.speed} kmh`)
-}
-Car.prototype.accelerate = function() {
-    this.speed = this.speed + 10;
-    console.log(`${this.make} going ${this.speed} kmh`)
-}
+    console.log(`${this.make} going ${this.speed} kmh`);
+  };
+};
+
+Car.prototype.brake = function () {
+  this.speed = this.speed - 5;
+  console.log(`${this.make} going ${this.speed} kmh`);
+};
+Car.prototype.accelerate = function () {
+  this.speed = this.speed + 10;
+  console.log(`${this.make} going ${this.speed} kmh`);
+};
 
 let bmw = new Car('BMW', 60);
 bmw.brake();
@@ -86,3 +89,54 @@ bmw.brake();
 bmw.accelerate();
 bmw.accelerate();
 bmw.accelerate();
+
+// class expression
+const PersonClExp = class {};
+
+//class declarations
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+  // This is on prototype, not instance. This is like using Object.prototype.method() notation without having to manually manipulate the prototype property.
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+
+  get age() {
+    return 2037 - this.birthYear;
+  }
+  //
+  set fullName(name) {
+    //Underscore is a convention but truly you are just creating a new property
+
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a fullname`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
+}
+
+const jessica = new PersonCl('Jessica Davis', 1996);
+console.dir(jessica);
+jessica.calcAge();
+console.log(jessica.age);
+
+// This is exactly the same as declaring in the Class declaration as we did with calcAge()
+
+PersonCl.prototype.greet = function () {
+  console.log(`Hey ${this.firstName}`);
+};
+
+const walter = new PersonCl('Walt', 1963);
+
+jessica.greet(); //=> Hey Jessica
+
+//1. Classes are NOT hoisted
+//2. Classes are first class citizens
+//3. Classes are executed in strict mode
+
+// Setters
