@@ -118,6 +118,11 @@ class PersonCl {
   get fullName() {
     return this._fullName;
   }
+
+  static hey() {
+    console.log('Hey There');
+    console.log(this);
+  }
 }
 
 const jessica = new PersonCl('Jessica Davis', 1996);
@@ -131,7 +136,7 @@ PersonCl.prototype.greet = function () {
   console.log(`Hey ${this.firstName}`);
 };
 
-const walter = new PersonCl('Walt', 1963);
+// const walter = new PersonCl('Walt', 1963);
 
 jessica.greet(); //=> Hey Jessica
 
@@ -139,4 +144,15 @@ jessica.greet(); //=> Hey Jessica
 //2. Classes are first class citizens
 //3. Classes are executed in strict mode
 
-// Setters
+// Static Methods
+
+Number.parseFloat(12);
+
+Person.hey = function () {
+  console.log('Hey There');
+  console.log(this);
+};
+
+Person.hey();
+
+PersonCl.hey();
