@@ -175,29 +175,29 @@ class StudentCl extends PersonCl {
 
 const martha = new StudentCl('Marth Jones', 2012, 'Computer Science');
 console.log(martha);
-const PersonProto = {
-  calcAge() {
-    console.log(2037 - this.birthYear);
-  },
 
-  init(firstName, birthYear) {
-    this.firstName = firstName;
-    this.birthYear = birthYear;
-  },
-};
+// const PersonProto = {
+//   calcAge() {
+//     console.log(2037 - this.birthYear);
+//   },
 
+//   init(firstName, birthYear) {
+//     this.firstName = firstName;
+//     this.birthYear = birthYear;
+//   },
+// };
 //Creates a new object using the Proto of the object passed to .create
-const steven = Object.create(PersonProto);
-console.log(steven);
-steven.name = 'Steven';
-steven.birthYear = 2002;
-steven.calcAge();
+// const steven = Object.create(PersonProto);
+// console.log(steven);
+// steven.name = 'Steven';
+// steven.birthYear = 2002;
+// steven.calcAge();
 
-console.log(steven.__proto__ === PersonProto);
+// console.log(steven.__proto__ === PersonProto);
 
-const sarah = Object.create(PersonProto);
-sarah.init('Sarah', 1979);
-sarah.calcAge();
+// const sarah = Object.create(PersonProto);
+// sarah.init('Sarah', 1979);
+// sarah.calcAge();
 
 /* 
 // Every funct
@@ -232,11 +232,13 @@ class CarCl {
   accelerate() {
     this.speed = this.speed + 10;
     console.log(`${this.make} going ${this.speed} kmh`);
+    return this;
   }
 
   brake() {
     this.speed = this.speed - 5;
     console.log(`${this.make} going ${this.speed} kmh`);
+    return this;
   }
 
   get speedUS() {
@@ -334,3 +336,126 @@ ev.chargeBattery(67);
 console.log(ev.charge);
 
 ev.accelerate();
+
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+const steve = Object.create(PersonProto);
+
+const StudentProto = Object.create(PersonProto);
+
+StudentProto.init = function (firstName, birthYear, course) {
+  PersonProto.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+StudentProto.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+const jay = Object.create(StudentProto);
+
+jay.init('Jay', 2010, 'Computer Science');
+jay.introduce();
+jay.calcAge();
+
+class Account {
+  //Public fields (instances) - references by this
+  locale = navigator.language;
+  //private fields
+  #movements = [];
+  //creates the pin as private and leaves it to be assigned for later
+  #pin;
+
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.#pin = pin;
+    // this._movements = [];
+    // this.locale = navigator.language;
+  }
+
+  //API
+  getMovements() {
+    return this.#movements;
+  }
+
+  deposit(val) {
+    this.#movements.push(val);
+    return this;
+  }
+
+  withdraw(val) {
+    this.deposit(-val);
+    return this;
+  }
+
+  requestLoan(val) {
+    if (this.approveLoan(val)) {
+      this.deposit(val);
+      console.log('Loan Approved');
+      return this;
+    }
+  }
+
+  static helper() {
+    console.log('Helper');
+  }
+  //Private methods
+
+  approveLoan(val) {
+    return true;
+  }
+}
+
+const acc1 = new Account('Jonas', 'EUR', 1111);
+console.log(acc1);
+
+acc1.deposit(100);
+acc1.withdraw(50);
+
+acc1.requestLoan();
+
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(6000).getMovements();
+
+class EVCl extends CarCl {
+  #charge;
+
+  constructor(make, speed, charge) {
+    super(speed, make);
+    this.#charge = charge;
+  }
+
+  accelerate() {
+    this.speed = this.speed + 20;
+    this.#charge = this.#charge - 1;
+    console.log(
+      `${this.make} is going ${this.speed} with a charge of ${this.#charge}`
+    );
+    return this;
+  }
+
+  chargeBattery(chargeTo) {
+    this.#charge = chargeTo;
+    return this;
+  }
+
+  brake() {
+    this.speed = this.speed - 10;
+    console.log(`${this.make} going ${this.speed} kmh`);
+    return this;
+  }
+}
+
+const ev3 = new EVCl('T', 70, 50);
+
+console.log(ev3.chargeBattery().chargeBattery(70).brake().accelerate().speedUS);
+
+ev3.chargeBattery().chargeBattery(70).brake().accelerate().speedUS;
